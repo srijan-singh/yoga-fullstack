@@ -24,6 +24,6 @@ class Order():
     def __init__(self, OrderResponse):
         self._id       : ObjectId = OrderResponse["_id"]
         self.member_id : int = OrderResponse["member_id"]
-        self.fee       : float = OrderResponse["fee"]
         self.batch_id  : int = OrderResponse["batch_id"]
         self.timestamp : datetime.datetime = OrderResponse["timestamp"]
+        self.fee       : float = OrderResponse["fee"]
