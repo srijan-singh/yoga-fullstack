@@ -55,8 +55,10 @@
     - deleteBatch
 
 - ### Order
+    - getAllOrder
+    - getOneOrder
+    - getRecipient
     - postOrder
-    - getOrder
 
 
 ## API
