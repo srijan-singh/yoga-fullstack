@@ -21,17 +21,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# main
-Readme.md
-
-/public/manifest.json
-/public/robots.txt
-
-package-lock.json
-package.json
-
-/src/App.test.js
-/src/.svg
-/src/reportWebVitals
-/src/Tests.js
