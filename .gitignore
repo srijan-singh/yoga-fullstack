@@ -17,9 +17,6 @@ frontend/.env.test.local
 frontend/.env.production.local
 frontend/.md
 
-frontend/public
-frontend/package-lock.json
-frontend/package.json
 
 frontend/npm-debug.log*
 frontend/yarn-debug.log*
