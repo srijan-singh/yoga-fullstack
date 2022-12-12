@@ -1,29 +1,31 @@
 from bson import ObjectId
+from pydantic import BaseModel
 import datetime
 
-#Member
-class Member:
-    def __init__(self, MemberResponse):
-        self._id     : str = MemberResponse["_id"]
-        self.name    : str = MemberResponse["name"]
-        self.age     : int = MemberResponse["age"]
-        self.gender  : str = MemberResponse["gender"]
-        self.address : str = MemberResponse["address"]
-        self.pin     : int = MemberResponse["pin"]
-        self.mobile  : int = MemberResponse["mobile"]
+# Member
+class Member(BaseModel):
+    id      : str = None
+    name    : str = None
+    age     : int = None
+    gender  : str = None
+    address : str = None
+    pin     : int = None
+    mobile  : int = None
 
-#Batch
-class Batch:
-    def __init__(self, BatchResponse):
-        self._id  : str  = BatchResponse["_id"]
-        self.slot : str = BatchResponse["slot"]
-        self.cost : float = BatchResponse["cost"]
+# Batch
+class Batch(BaseModel):
+    id   : str   = None
+    slot : str   = None
+    cost : float = None
 
-#Order
-class Order():
-    def __init__(self, OrderResponse):
-        self._id       : ObjectId = OrderResponse["_id"]
-        self.member_id : int = OrderResponse["member_id"]
-        self.batch_id  : int = OrderResponse["batch_id"]
-        self.fee       : float = OrderResponse["fee"]
-        self.timestamp : datetime.datetime = OrderResponse["timestamp"]
+# Order
+class Order(BaseModel):
+    member_id : str 
+    batch_id  : str
+    fee       : float = 500.00
+    timestamp : datetime.datetime 
+
+class Payment(BaseModel):
+    member_id : str
+    batch_id  : str
+    fee_paid  : bool = False 

@@ -1,11 +1,12 @@
 import pymongo
 # Model
-from models import Member, Batch, Order
-from bson import ObjectId
+from models import Member, Batch, Order, Payment
 import datetime
 
 # Access Key
 from setting import access_key
+
+from bson import ObjectId
 
 client = pymongo.MongoClient(access_key)
 database = client["Yoga"]
@@ -22,61 +23,59 @@ def getAllMember():
 
     member_list = []
 
-    for MemberResponse in buffer:
-
-        member = Member(MemberResponse)
+    for member in buffer:
 
         json = {
-            "_id"    : str(member._id),
-            "name"   : str(member.name),
-            "age"    : str(member.age),
-            "gender" : str(member.gender),
-            "address": str(member.address),
-            "pin"    : str(member.pin),
-            "mobile" : str(member.mobile)
+            "id"    : member["_id"],
+            "name"   : member["name"],
+            "age"    : member["age"],
+            "gender" : member["gender"],
+            "address": member["address"],
+            "pin"    : member["pin"],
+            "mobile" : member["mobile"]
         }
 
         member_list.append(json)
 
     return member_list
 
-def getOneMember(_id : str):
+def getOneMember(id : str):
     try:
-        member = Member(member_collection.find_one({"_id":_id}))
+        member = member_collection.find_one({"_id":id})
 
         json = {
-                "_id"    : str(member._id),
-                "name"   : str(member.name),
-                "age"    : str(member.age),
-                "gender" : str(member.gender),
-                "address": str(member.address),
-                "pin"    : str(member.pin),
-                "mobile" : str(member.mobile)
-            }
+            "id"    : member["_id"],
+            "name"   : member["name"],
+            "age"    : member["age"],
+            "gender" : member["gender"],
+            "address": member["address"],
+            "pin"    : member["pin"],
+            "mobile" : member["mobile"]
+        }
 
         return json
 
     except:
-        return {400 : "Invalid Credential"}
+        return {"response" : "Invalid Credential"}
 
-def postMember(_id : str, name : str, age : int, gender : str, address : str, pin : int, mobile : int):
+def postMember(member : Member):
 
-    if(member_collection.find_one({"_id":_id})):
-        return {302 : "Email aLready in use!"}
+    if(member_collection.find_one({"_id":member.id})):
+        return {"response" : "Email aLready in use!"}
     
     data = {
-        "_id"    : _id,
-        "name"   : name,
-        "age"    : age,
-        "gender" : gender,
-        "address": address,
-        "pin"    : pin,
-        "mobile" : mobile
+        "_id"    : member.id,
+        "name"   : member.name,
+        "age"    : member.age,
+        "gender" : member.gender,
+        "address": member.address,
+        "pin"    : member.pin,
+        "mobile" : member.mobile
     }
 
     member_collection.insert_one(data)
 
-    return getOneMember(_id)
+    return {"response" : "Member Added Successfully!"}
 
 def putMember(_id: str, name : str = None, age : int = None, gender : str = None, address : str = None, pin : int = None, mobile : int = None):
 
@@ -139,14 +138,14 @@ def putMember(_id: str, name : str = None, age : int = None, gender : str = None
         return getOneMember(_id)
 
     except:
-        return {400 : "Invalid Credential"}
+        return {"response" : "Invalid Credential"}
 
 def deleteMember(_id : str):
     try:
         response = member_collection.find_one_and_delete({"_id":_id})
         return response
     except:
-        return {400 : "Invalid Credential"}
+        return {"response" : "Invalid Credential"}
 
 #Batch
 def getAllBatch():
@@ -156,14 +155,12 @@ def getAllBatch():
 
     batch_list = []
 
-    for BatchResponse in buffer:
-
-        batch = Batch(BatchResponse)
+    for batch in buffer:
 
         json = {
-            "_id" : str(batch._id),
-            "slot": str(batch.slot),
-            "cost": str(batch.cost)
+            "id" : batch["_id"],
+            "slot": batch["slot"],
+            "cost": str(batch["cost"])
         }
 
         batch_list.append(json)
@@ -172,22 +169,22 @@ def getAllBatch():
 
 def getOneBatch(_id : str):
     try:
-        batch = Batch(batch_collection.find_one({"_id":_id}))
+        batch = batch_collection.find_one({"_id":_id})
 
         json = {
-                "_id" : str(batch._id),
-                "slot": str(batch.slot),
-                "cost": str(batch.cost)
-            }
+            "id" : batch["_id"],
+            "slot": batch["slot"],
+            "cost": str(batch["cost"])
+        }
 
         return json
     except:
-        {400: "Invalid Credential"}
+        return {"response" : "Invalid Credential"}
 
 def postBatch(_id : str, batch_slot : str, batch_cost : float):
 
     if(batch_collection.find_one({"_id":_id})):
-        return {302 : "Batch aLready exist!"}
+        return {"response" : "Batch aLready exist!"}
 
     data = {
         "_id" : _id,
@@ -200,7 +197,6 @@ def postBatch(_id : str, batch_slot : str, batch_cost : float):
     return data
 
 def putBatch(_id : str, batch_slot : str = None, batch_cost : float = None):
-
     try:
 
         if(batch_slot):
@@ -225,7 +221,7 @@ def putBatch(_id : str, batch_slot : str = None, batch_cost : float = None):
 
     except:
 
-        return {400 : "Invalid Credential"}
+        return {"response" : "Invalid Credential"}
 
 def deleteBatch(_id : str):
     try:
@@ -235,29 +231,48 @@ def deleteBatch(_id : str):
         return response
 
     except:
-        return {400 : "Invalid Credential"}
+        return {"response" : "Invalid Credential"}
 
 #Order
-def getOneOrder(_id : ObjectId):
-    
-    try:
-        order = Order(order_collection.find_one({"_id":_id}))
+def getAllOrder():
+    order_list = list(order_collection.find({}))
 
+    buffer = [order for order in order_list]
+
+    order_list = []
+
+    for order in buffer:
 
         json = {
-            "_id"       : str(_id),
-            "member_id" : str(order.member_id),
-            "batch_id"  : str(order.batch_id),
-            "fee"       : str(order.fee),
-            "timestamp" : str(order.timestamp)
+            "id" : str(order["_id"]),
+            "member_id" : order["member_id"],
+            "batch_id" :order["batch_id"],
+            "fee": order["fee"],
+            "timestamp" : order["timestamp"]
+        }
+
+        order_list.append(json)
+
+    return order_list
+
+def getOneOrder(_id : ObjectId):
+    try:
+        order = order_collection.find_one({"_id":_id})
+
+        json = {
+            "_id"       : order[_id],
+            "member_id" : order[order.member_id],
+            "batch_id"  : order[order.batch_id],
+            "fee"       : order[order.fee],
+            "timestamp" : order[order.timestamp]
         }
 
         return json
 
     except:
-        return {400 : "Order Don't exist!"}
+        return {"response" : "Order Don't exist!"}
 
-def getOrder(_id : ObjectId):
+def getRecipient(_id : ObjectId):
 
     try:
         order = getOneOrder(_id)
@@ -285,19 +300,18 @@ def getOrder(_id : ObjectId):
         return order_recipient
     
     except:
-        return {400 : "Invalid Credential"}
+        return {"response" : "Invalid Credential"}
 
 def postOrder(member_id : str, batch_id : str):
-    
+ 
     try:
-
         member = getOneMember(member_id)
         batch = getOneBatch(batch_id)
         timestamp = datetime.datetime.now()
 
         order_data = {
-            "member_id" : member["_id"],
-            "batch_id"  : batch["_id"],
+            "member_id" : member["id"],
+            "batch_id"  : batch["id"],
             "fee"   : batch["cost"],
             "timestamp" : timestamp
         }
@@ -309,10 +323,10 @@ def postOrder(member_id : str, batch_id : str):
             "timestamp" : timestamp,
 
             "fee"       : batch["cost"],
-            "batch_id"  : batch["_id"],
+            "batch_id"  : batch["id"],
             "batch_slot": batch["slot"],
             
-            "member_id" : member["_id"],
+            "member_id" : member["id"],
             "name"      : member["name"],
             "age"       : member["age"],
             "gender"    : member["gender"],
@@ -325,10 +339,13 @@ def postOrder(member_id : str, batch_id : str):
         return order_recipient
 
     except:
-        return {400: "Invalid Credential"}
+        return {"response" : "Invalid Credential"}
+
 
 
 if __name__ == "__main__":
+
+    
 
     #member_id = ObjectId("6395b6ec14fdf993bb7a17da")
     #batch_id = ObjectId("639586591f71f7951080c3dc")

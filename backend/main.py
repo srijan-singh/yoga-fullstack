@@ -3,6 +3,8 @@ from fastapi import FastAPI, HTTPException
 # an HTTP-specific exception class  to generate exception information
 from fastapi.middleware.cors import CORSMiddleware
 
+from models import Member, Batch, Order, Payment
+
 from bson import ObjectId
 
 #Payment Gateway
@@ -27,7 +29,8 @@ from databases import(
 
     #Order
     postOrder,
-    getOrder
+    getRecipient,
+    getAllOrder
 )
 
 app = FastAPI()
@@ -51,20 +54,20 @@ app.add_middleware(
 async def index():
     return {"Yoga":"Backend"}
 
-#Member
+#   Member
 @app.post("/register_member")
-async def register_member(_id:str, name : str, age : int, gender : str, address : str, pin : int, mobile : int):
-    response = postMember(_id, name, age, gender, address, pin, mobile)
+async def register_member(request : Member):
+    response = postMember(request)
+    return request
+
+@app.get("/member/{id}")
+async def show_one_member(id:str):
+    response = getOneMember(id)
     return response
 
-@app.get("/member/{_id}")
-async def show_one_member(_id:str):
-    response = getOneMember(_id)
-    return response
-
-@app.put("/member/{_id}/update")
-async def update_member(_id:str, name : str = None, age : int = None, gender : str = None, address : str = None, pin : int = None, mobile : int = None):
-    response = putMember(_id, name, age, gender, address, pin, mobile)
+@app.put("/member/{id}/update")
+async def update_member(id : str, member : Member):
+    response = putMember(id, member.name, member.age, member.gender, member.address, member.pin, member.mobile)
     return response
 
 @app.delete("/member/{_id}/delete")
@@ -75,7 +78,7 @@ async def remove_member(_id : str):
 
     return {500 : "User doesn't exist"}
 
-#Batch
+#   Batch
 @app.get("/batch/*")
 async def show_all_batch():
     response = getAllBatch()
@@ -87,24 +90,24 @@ async def show_one_batch(_id : str):
     response = getOneBatch(_id)
     return response
 
-#Order
-@app.post("/member/{member_id}/batch/{batch_id}/order")
-async def pay_fee(member_id: str, batch_id: str, payment:bool = False):
-    
-    if(payment):
-        return postOrder(member_id, batch_id)
+#   Order
+@app.post("/payfee/payment_gateway/")
+async def pay_fee(payment : Payment):
 
-    return {500: "Transaction Failed"}
+    if(CompletePayment(payment.fee_paid)):
+        return postOrder(payment.member_id, payment.batch_id)
+
+    return {"response": "Transaction Failed"}
 
 @app.get("/order/{id}")
 async def show_recipient(id:str):
     _id = ObjectId(id)
 
-    return getOrder(_id)
+    return getRecipient(_id)
 
-#Admin Access
+############################################Admin Access#################################################
 
-#Member
+#   Member
 @app.get("/admin/member/*")
 async def show_all_member(access_id : str):
     if(access_id != "admin123"):
@@ -112,20 +115,20 @@ async def show_all_member(access_id : str):
     response = getAllMember()
     return response
 
-#Batch
+#   Batch
 @app.post("/admin/add_batch")
-async def add_batch(access_id : str, _id : str, batch_slot : str, batch_cost : float):
+async def add_batch(access_id : str, batch:Batch):
     if(access_id != "admin123"):
-        return {400 : "Forbiden!"}
-    response = postBatch(_id, batch_slot, batch_cost)
+        return {"response" : "Forbiden!"}
+    response = postBatch(bacth.id, batch.slot, batch.cost)
     return response
 
 @app.put("/admin/batch/{_id}/update")
-async def update_batch(access_id : str, _id : str, batch_slot : str = None, batch_cost : float = None):
+async def update_batch(access_id : str, _id : str, batch:Batch):
     if(access_id != "admin123"):
         return {400 : "Forbiden!"}
 
-    response = putBatch(_id, batch_slot, batch_cost)
+    response = putBatch(batch.id, batch.slot, batch.cost)
     return response
     
 @app.delete("/admin/batch/{id}/delete")
@@ -140,8 +143,14 @@ async def delete_batch(access_id : str, _id:str):
 
     return {500 : "Batch doesn't exist"}
 
+#   Order
+@app.get("/admin/order/all")
+async def show_all_order(access_id : str):
+    if(access_id != "admin123"):
+        return {"response" : "Forbiden!"}
 
+    return getAllOrder()
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8000, reload=True)
-    
+

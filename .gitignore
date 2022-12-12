@@ -21,3 +21,5 @@ frontend/.md
 frontend/npm-debug.log*
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
+
+backend/__pycache__
