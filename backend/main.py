@@ -146,7 +146,7 @@ async def delete_batch(access_id : str, _id:str):
     return {500 : "Batch doesn't exist"}
 
 #   Order
-@app.get("/admin/order/all")
+@app.get("/admin/order/*")
 async def show_all_order(access_id : str):
     if(access_id != "admin123"):
         return {"response" : "Forbiden!"}
