@@ -75,6 +75,7 @@
         - remove_member
 
     #### Batch (General)
+        - show_all_batch
         - show_one_batch
 
     #### Order (General)
@@ -85,10 +86,12 @@
         - show_all_member
 
     #### Batch (Admin Access)
-        - show_all_batch
         - add_batch
         - update_batch
         - delete_batch
+
+    #### Order (Admin Access)
+        - show_all_order
 
 
 
