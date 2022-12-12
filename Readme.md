@@ -1,6 +1,6 @@
 # Yoga Backend
 
-<img src ="https://img.shields.io/tokei/lines/github/srijan-singh/yoga-fullstack?label=Line%20of%20Code"> <img src ="https://img.shields.io/github/repo-size/srijan-singh/yoga-fullstack?color=orange&label=Size"> <img src="https://img.shields.io/github/directory-file-count/srijan-singh/yoga-fullstack/backend?color=purple&label=%20Backend%20File">
+<img src ="https://img.shields.io/tokei/lines/github/srijan-singh/yoga-fullstack?label=Line%20of%20Code"> <img src ="https://img.shields.io/github/repo-size/srijan-singh/yoga-fullstack?color=orange&label=Size"> <img src="https://img.shields.io/github/directory-file-count/srijan-singh/yoga-fullstack/backend?color=purple&label=%20Backend%20File"> <img src="https://img.shields.io/github/directory-file-count/srijan-singh/yoga-fullstack/frontend?color=magenta&label=Frontend%20File">
 
 ## Technology
 
