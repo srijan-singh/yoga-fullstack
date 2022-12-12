@@ -27,3 +27,8 @@ yarn-error.log*
 /public
 package-lock.json
 package.json
+
+/src/App.test.js
+/src/.svg
+/src/reportWebVitals
+/src/Tests.js
