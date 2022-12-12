@@ -81,7 +81,7 @@ def putMember(_id: str, name : str = None, age : int = None, gender : str = None
 
     try:
 
-        if(name):
+        if(name!="string"):
             update_data = {
                 "$set":{
                     "name":name
@@ -90,7 +90,7 @@ def putMember(_id: str, name : str = None, age : int = None, gender : str = None
 
             member_collection.update_one({"_id":_id}, update_data) 
 
-        if(age):
+        if(age!=0):
             update_data = {
                 "$set":{
                     "age":age
@@ -99,7 +99,7 @@ def putMember(_id: str, name : str = None, age : int = None, gender : str = None
 
             member_collection.update_one({"_id":_id}, update_data) 
 
-        if(gender):
+        if(gender!="string"):
             update_data = {
                 "$set":{
                     "gender":gender
@@ -108,7 +108,7 @@ def putMember(_id: str, name : str = None, age : int = None, gender : str = None
 
             member_collection.update_one({"_id":_id}, update_data) 
 
-        if(address):
+        if(address!="string"):
             update_data = {
                 "$set":{
                     "address":address
@@ -117,7 +117,7 @@ def putMember(_id: str, name : str = None, age : int = None, gender : str = None
 
             member_collection.update_one({"_id":_id}, update_data)
 
-        if(pin):
+        if(pin!=0):
             update_data = {
                 "$set":{
                     "pin":pin
@@ -126,7 +126,7 @@ def putMember(_id: str, name : str = None, age : int = None, gender : str = None
 
             member_collection.update_one({"_id":_id}, update_data)  
 
-        if(mobile):
+        if(mobile!=0):
             update_data = {
                 "$set":{
                     "mobile":mobile

@@ -73,6 +73,8 @@ async def update_member(id : str, member : Member):
 @app.delete("/member/{_id}/delete")
 async def remove_member(_id : str):
     
+    response = deleteMember(_id)
+
     if (response): 
         return {200 : "User Deleted"}
 
