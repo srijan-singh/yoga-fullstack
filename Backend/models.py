@@ -4,7 +4,7 @@ import datetime
 #Member
 class Member:
     def __init__(self, MemberResponse):
-        self._id     : ObjectId = MemberResponse["_id"]
+        self._id     : str = MemberResponse["_id"]
         self.name    : str = MemberResponse["name"]
         self.age     : int = MemberResponse["age"]
         self.gender  : str = MemberResponse["gender"]
@@ -15,7 +15,7 @@ class Member:
 #Batch
 class Batch:
     def __init__(self, BatchResponse):
-        self._id  : ObjectId  = BatchResponse["_id"]
+        self._id  : str  = BatchResponse["_id"]
         self.slot : str = BatchResponse["slot"]
         self.cost : float = BatchResponse["cost"]
 

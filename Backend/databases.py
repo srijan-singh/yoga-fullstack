@@ -40,24 +40,32 @@ def getAllMember():
 
     return member_list
 
-def getOneMember(_id : ObjectId):
-    member = Member(member_collection.find_one({"_id":_id}))
+def getOneMember(_id : str):
+    try:
+        member = Member(member_collection.find_one({"_id":_id}))
 
-    json = {
-            "_id"    : str(member._id),
-            "name"   : str(member.name),
-            "age"    : str(member.age),
-            "gender" : str(member.gender),
-            "address": str(member.address),
-            "pin"    : str(member.pin),
-            "mobile" : str(member.mobile)
-        }
+        json = {
+                "_id"    : str(member._id),
+                "name"   : str(member.name),
+                "age"    : str(member.age),
+                "gender" : str(member.gender),
+                "address": str(member.address),
+                "pin"    : str(member.pin),
+                "mobile" : str(member.mobile)
+            }
 
-    return json
+        return json
 
-def postMember(name : str, age : int, gender : str, address : str, pin : int, mobile : int):
+    except:
+        return {400 : "Invalid Credential"}
 
+def postMember(_id : str, name : str, age : int, gender : str, address : str, pin : int, mobile : int):
+
+    if(member_collection.find_one({"_id":_id})):
+        return {302 : "Email aLready in use!"}
+    
     data = {
+        "_id"    : _id,
         "name"   : name,
         "age"    : age,
         "gender" : gender,
@@ -66,71 +74,79 @@ def postMember(name : str, age : int, gender : str, address : str, pin : int, mo
         "mobile" : mobile
     }
 
-    _id = member_collection.insert_one(data).inserted_id
+    member_collection.insert_one(data)
 
     return getOneMember(_id)
 
-def putMember(_id: ObjectId, name : str = None, age : int = None, gender : str = None, address : str = None, pin : int = None, mobile : int = None):
+def putMember(_id: str, name : str = None, age : int = None, gender : str = None, address : str = None, pin : int = None, mobile : int = None):
 
-    if(name):
-        update_data = {
-            "$set":{
-                "name":name
+    try:
+
+        if(name):
+            update_data = {
+                "$set":{
+                    "name":name
+                }
             }
-        }
 
-        member_collection.update_one({"_id":_id}, update_data) 
+            member_collection.update_one({"_id":_id}, update_data) 
 
-    if(age):
-        update_data = {
-            "$set":{
-                "age":age
+        if(age):
+            update_data = {
+                "$set":{
+                    "age":age
+                }
             }
-        }
 
-        member_collection.update_one({"_id":_id}, update_data) 
+            member_collection.update_one({"_id":_id}, update_data) 
 
-    if(gender):
-        update_data = {
-            "$set":{
-                "gender":gender
+        if(gender):
+            update_data = {
+                "$set":{
+                    "gender":gender
+                }
             }
-        }
 
-        member_collection.update_one({"_id":_id}, update_data) 
+            member_collection.update_one({"_id":_id}, update_data) 
 
-    if(address):
-        update_data = {
-            "$set":{
-                "address":address
+        if(address):
+            update_data = {
+                "$set":{
+                    "address":address
+                }
             }
-        }
 
-        member_collection.update_one({"_id":_id}, update_data)
+            member_collection.update_one({"_id":_id}, update_data)
 
-    if(pin):
-        update_data = {
-            "$set":{
-                "pin":pin
+        if(pin):
+            update_data = {
+                "$set":{
+                    "pin":pin
+                }
             }
-        }
 
-        member_collection.update_one({"_id":_id}, update_data)  
+            member_collection.update_one({"_id":_id}, update_data)  
 
-    if(mobile):
-        update_data = {
-            "$set":{
-                "mobile":mobile
+        if(mobile):
+            update_data = {
+                "$set":{
+                    "mobile":mobile
+                }
             }
-        }
 
-        member_collection.update_one({"_id":_id}, update_data) 
+            member_collection.update_one({"_id":_id}, update_data) 
 
-    return getOneMember(_id)
+        return getOneMember(_id)
 
-def deleteMember(_id : ObjectId):
-    response = member_collection.find_one_and_delete({"_id":_id})
-    return response
+    except:
+        return {400 : "Invalid Credential"}
+
+def deleteMember(_id : str):
+    try:
+        response = member_collection.find_one_and_delete({"_id":_id})
+        return response
+    except:
+        return {400 : "Invalid Credential"}
 
 #Batch
 def getAllBatch():
@@ -154,130 +170,162 @@ def getAllBatch():
 
     return batch_list
 
-def getOneBatch(_id : ObjectId):
-    batch = Batch(batch_collection.find_one({"_id":_id}))
+def getOneBatch(_id : str):
+    try:
+        batch = Batch(batch_collection.find_one({"_id":_id}))
 
-    json = {
-            "_id" : str(batch._id),
-            "slot": str(batch.slot),
-            "cost": str(batch.cost)
-        }
+        json = {
+                "_id" : str(batch._id),
+                "slot": str(batch.slot),
+                "cost": str(batch.cost)
+            }
 
-    return json
+        return json
+    except:
+        {400: "Invalid Credential"}
 
-def postBatch(batch_slot : str, batch_cost : float):
+def postBatch(_id : str, batch_slot : str, batch_cost : float):
+
+    if(batch_collection.find_one({"_id":_id})):
+        return {302 : "Batch aLready exist!"}
 
     data = {
+        "_id" : _id,
         "slot":batch_slot,
         "cost":batch_cost
         }
 
-    _id = batch_collection.insert_one(data).inserted_id
+    batch_collection.insert_one(data)
 
-    return getOneBatch(_id)
+    return data
 
-def putBatch(_id : ObjectId, batch_slot : str = None, batch_cost : float = None):
+def putBatch(_id : str, batch_slot : str = None, batch_cost : float = None):
 
-    if(batch_slot):
-        update_data = {
-            "$set":{
-                    "slot":batch_slot
-                    }
-        } 
+    try:
 
-        batch_collection.update_one({"_id":_id}, update_data) 
+        if(batch_slot):
+            update_data = {
+                "$set":{
+                        "slot":batch_slot
+                        }
+            } 
 
-    if(batch_cost):
-        update_data = {
-            "$set":{
-                    "cost":batch_costs
-                    }
-        } 
+            batch_collection.update_one({"_id":_id}, update_data) 
 
-        batch_collection.update_one({"_id":_id}, update_data) 
+        if(batch_cost):
+            update_data = {
+                "$set":{
+                        "cost":batch_cost
+                        }
+            } 
 
-    return getOneBatch(_id)
+            batch_collection.update_one({"_id":_id}, update_data) 
 
-def deleteBatch(_id : ObjectId):
+        return getOneBatch(_id)
 
-    response = batch_collection.find_one_and_delete({"_id":_id})
+    except:
 
-    return response
+        return {400 : "Invalid Credential"}
+
+def deleteBatch(_id : str):
+    try:
+
+        response = batch_collection.find_one_and_delete({"_id":_id})
+
+        return response
+
+    except:
+        return {400 : "Invalid Credential"}
 
 #Order
 def getOneOrder(_id : ObjectId):
-    order = Order(order_collection.find_one({"_id":_id}))
+    
+    try:
+        order = Order(order_collection.find_one({"_id":_id}))
 
-    json = {
-        "_id"       : str(_id),
-        "member_id" : str(order.member_id),
-        "batch_id"  : str(order.batch_id),
-        "fee"       : str(order.fee),
-        "timestamp" : str(order.timestamp)
-    }
 
-    return json
+        json = {
+            "_id"       : str(_id),
+            "member_id" : str(order.member_id),
+            "batch_id"  : str(order.batch_id),
+            "fee"       : str(order.fee),
+            "timestamp" : str(order.timestamp)
+        }
+
+        return json
+
+    except:
+        return {400 : "Order Don't exist!"}
 
 def getOrder(_id : ObjectId):
 
-    order = getOneOrder(_id)
-    member = getOneMember(ObjectId(order["member_id"]))
-    batch = getOneBatch(ObjectId(order["batch_id"]))
+    try:
+        order = getOneOrder(_id)
+        member = getOneMember(ObjectId(order["member_id"]))
+        batch = getOneBatch(ObjectId(order["batch_id"]))
 
-    order_recipient = {
-        "order_id"  : order["_id"],
-        "timestamp" : order["timestamp"],
+        order_recipient = {
+            "order_id"  : order["_id"],
+            "timestamp" : order["timestamp"],
 
-        "batch_cost": batch["cost"],
-        "batch_id"  : batch["_id"],
-        "batch_slot": batch["slot"],
-        
-        "member_id" : member["_id"],
-        "name"      : member["name"],
-        "age"       : member["age"],
-        "gender"    : member["gender"],
-        "address"   : member["address"],
-        "pin"       : member["pin"],
-        "mobile"    : member["mobile"],
+            "batch_cost": batch["cost"],
+            "batch_id"  : batch["_id"],
+            "batch_slot": batch["slot"],
+            
+            "member_id" : member["_id"],
+            "name"      : member["name"],
+            "age"       : member["age"],
+            "gender"    : member["gender"],
+            "address"   : member["address"],
+            "pin"       : member["pin"],
+            "mobile"    : member["mobile"],
 
-    }
+        }
 
-    return order_recipient
-
-def postOrder(member_id : ObjectId, batch_id : ObjectId):
+        return order_recipient
     
-    member = getOneMember(member_id)
-    batch = getOneBatch(batch_id)
-    timestamp = datetime.datetime.now()
+    except:
+        return {400 : "Invalid Credential"}
 
-    order_data = {
-        "member_id" : member["_id"],
-        "batch_id"  : batch["_id"],
-        "fee"   : batch["cost"],
-        "timestamp" : timestamp
-    }
+def postOrder(member_id : str, batch_id : str):
+    
+    try:
 
-    _id = order_collection.insert_one(order_data).inserted_id
+        member = getOneMember(member_id)
+        batch = getOneBatch(batch_id)
+        timestamp = datetime.datetime.now()
 
-    order_recipient = {
-        "order_id"  : str(_id),
-        "timestamp" : timestamp,
+        order_data = {
+            "member_id" : member["_id"],
+            "batch_id"  : batch["_id"],
+            "fee"   : batch["cost"],
+            "timestamp" : timestamp
+        }
 
-        "fee"       : batch["cost"],
-        "batch_id"  : batch["_id"],
-        "batch_slot": batch["slot"],
-        
-        "member_id" : member["_id"],
-        "name"      : member["name"],
-        "age"       : member["age"],
-        "gender"    : member["gender"],
-        "address"   : member["address"],
-        "pin"       : member["pin"],
-        "mobile"    : member["mobile"],
+        _id = order_collection.insert_one(order_data).inserted_id
 
-    }
+        order_recipient = {
+            "order_id"  : str(_id),
+            "timestamp" : timestamp,
 
-    return order_recipient
+            "fee"       : batch["cost"],
+            "batch_id"  : batch["_id"],
+            "batch_slot": batch["slot"],
+            
+            "member_id" : member["_id"],
+            "name"      : member["name"],
+            "age"       : member["age"],
+            "gender"    : member["gender"],
+            "address"   : member["address"],
+            "pin"       : member["pin"],
+            "mobile"    : member["mobile"],
+
+        }
+
+        return order_recipient
+
+    except:
+        return {400: "Invalid Credential"}
 
 
 if __name__ == "__main__":

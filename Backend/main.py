@@ -53,47 +53,46 @@ async def index():
 
 #Member
 @app.post("/register_member")
-async def register_member(name : str, age : int, gender : str, address : str, pin : int, mobile : int):
-    response = postMember(name, age, gender, address, pin, mobile)
+async def register_member(_id:str, name : str, age : int, gender : str, address : str, pin : int, mobile : int):
+    response = postMember(_id, name, age, gender, address, pin, mobile)
     return response
 
-@app.get("/member/{id}")
-async def show_one_member(id:str):
-    _id = ObjectId(id)
+@app.get("/member/{_id}")
+async def show_one_member(_id:str):
     response = getOneMember(_id)
     return response
 
-@app.put("/member/{id}/update")
-async def update_member(id:str, name : str = None, age : int = None, gender : str = None, address : str = None, pin : int = None, mobile : int = None):
-    _id = ObjectId(id)
+@app.put("/member/{_id}/update")
+async def update_member(_id:str, name : str = None, age : int = None, gender : str = None, address : str = None, pin : int = None, mobile : int = None):
     response = putMember(_id, name, age, gender, address, pin, mobile)
     return response
 
-@app.delete("/member/{id}/delete")
-async def remove_member(id : str):
-    _id = ObjectId(id)
-    response = deleteMember(_id)
-
+@app.delete("/member/{_id}/delete")
+async def remove_member(_id : str):
+    
     if (response): 
         return {200 : "User Deleted"}
 
     return {500 : "User doesn't exist"}
 
 #Batch
+@app.get("/batch/*")
+async def show_all_batch():
+    response = getAllBatch()
+    return response
+
 @app.get("/batch/{_id}")
-async def show_one_batch(id : str):
-    _id = ObjectId(id)
+async def show_one_batch(_id : str):
+    
     response = getOneBatch(_id)
     return response
 
 #Order
 @app.post("/member/{member_id}/batch/{batch_id}/order")
 async def pay_fee(member_id: str, batch_id: str, payment:bool = False):
-    _member_id = ObjectId(member_id)
-    _batch_id = ObjectId(batch_id)
     
     if(payment):
-        return postOrder(_member_id, _batch_id)
+        return postOrder(member_id, batch_id)
 
     return {500: "Transaction Failed"}
 
@@ -109,39 +108,31 @@ async def show_recipient(id:str):
 @app.get("/admin/member/*")
 async def show_all_member(access_id : str):
     if(access_id != "admin123"):
-        return {404 : "Forbiden!"}
+        return {400 : "Forbiden!"}
     response = getAllMember()
     return response
 
 #Batch
-@app.get("/admin/batch/*")
-async def show_all_batch(access_id:str):
-    if(access_id != "admin123"):
-        return {404 : "Forbiden!"}
-    response = getAllBatch()
-    return response
-
 @app.post("/admin/add_batch")
-async def add_batch(access_id : str, batch_slot : str, batch_cost : float):
+async def add_batch(access_id : str, _id : str, batch_slot : str, batch_cost : float):
     if(access_id != "admin123"):
-        return {404 : "Forbiden!"}
-    response = postBatch(batch_slot, batch_cost)
+        return {400 : "Forbiden!"}
+    response = postBatch(_id, batch_slot, batch_cost)
     return response
 
-@app.put("/admin/batch/{id}/update")
-async def update_batch(access_id : str, id:str, batch_slot : str = None, batch_cost : float = None):
+@app.put("/admin/batch/{_id}/update")
+async def update_batch(access_id : str, _id : str, batch_slot : str = None, batch_cost : float = None):
     if(access_id != "admin123"):
-        return {404 : "Forbiden!"}
+        return {400 : "Forbiden!"}
 
-    _id = ObjectId(id)
     response = putBatch(_id, batch_slot, batch_cost)
     return response
     
 @app.delete("/admin/batch/{id}/delete")
-async def delete_batch(access_id : str, id:str):
+async def delete_batch(access_id : str, _id:str):
     if(access_id != "admin123"):
-        return {404 : "Forbiden!"}
-    _id = ObjectId(id)
+        return {400 : "Forbiden!"}
+    
     response = deleteBatch(_id)
 
     if (response): 
