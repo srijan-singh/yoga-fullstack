@@ -23,6 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # main
+Readme.md
 
 /public/manifest.json
 /public/robots.txt
