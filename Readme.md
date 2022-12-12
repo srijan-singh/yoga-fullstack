@@ -1,5 +1,7 @@
 # Yoga Backend
 
+<img src ="https://img.shields.io/tokei/lines/github/srijan-singh/yoga-fullstack?label=Line%20of%20Code">
+
 ## Technology
 
 - FastAPI : API Framework
