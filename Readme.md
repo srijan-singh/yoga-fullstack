@@ -35,7 +35,7 @@
     - timestamp : datetime
 
 - ### ER Diagram
-    <img src="res/img2.png">
+    <img src="https://github.com/srijan-singh/yoga-fullstack/blob/main/res/img2.png">
 
 
 ## Querries
@@ -64,7 +64,7 @@
 ## API
 
 - ### User Interface
-    <img src="res/img1.png">
+    <img src="https://github.com/srijan-singh/yoga-fullstack/blob/main/res/img1.png">
 
 - ### Requests
 
