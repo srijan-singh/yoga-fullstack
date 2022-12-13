@@ -4,9 +4,9 @@
 
 ## Frontend Technology
 
-- HTML      
-- CSS
-- Javascript
+- HTML       : Markup Language   
+- CSS        : Stylying Language
+- Javascript : Scripting Language
 
 ## Backend Technology
 
