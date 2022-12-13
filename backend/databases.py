@@ -56,7 +56,8 @@ def getOneMember(id : str):
         return json
 
     except:
-        return {"response" : "Invalid Credential"}
+
+        return False
 
 def postMember(member : Member):
 
@@ -81,7 +82,7 @@ def putMember(_id: str, name : str = None, age : int = None, gender : str = None
 
     try:
 
-        if(name!="string"):
+        if(name):
             update_data = {
                 "$set":{
                     "name":name
@@ -99,7 +100,7 @@ def putMember(_id: str, name : str = None, age : int = None, gender : str = None
 
             member_collection.update_one({"_id":_id}, update_data) 
 
-        if(gender!="string"):
+        if(gender):
             update_data = {
                 "$set":{
                     "gender":gender
@@ -108,7 +109,7 @@ def putMember(_id: str, name : str = None, age : int = None, gender : str = None
 
             member_collection.update_one({"_id":_id}, update_data) 
 
-        if(address!="string"):
+        if(address):
             update_data = {
                 "$set":{
                     "address":address
@@ -135,10 +136,10 @@ def putMember(_id: str, name : str = None, age : int = None, gender : str = None
 
             member_collection.update_one({"_id":_id}, update_data) 
 
-        return getOneMember(_id)
+        return True
 
     except:
-        return {"response" : "Invalid Credential"}
+        return False
 
 def deleteMember(_id : str):
     try:
@@ -304,42 +305,49 @@ def getRecipient(_id : ObjectId):
 
 def postOrder(member_id : str, batch_id : str):
  
-    try:
-        member = getOneMember(member_id)
-        batch = getOneBatch(batch_id)
-        timestamp = datetime.datetime.now()
 
-        order_data = {
-            "member_id" : member["id"],
-            "batch_id"  : batch["id"],
-            "fee"   : batch["cost"],
-            "timestamp" : timestamp
-        }
+    member = getOneMember(member_id)
+    batch = getOneBatch(batch_id)
+    time = datetime.datetime.now()
 
-        _id = order_collection.insert_one(order_data).inserted_id
+    list_of_months = {'1': 'January', '2': 'February', '3': 'March',
+                            '4': 'April', '5': 'May', '6': 'June', '7': 'July',
+                            '8': 'August', '9': 'September', '10': 'October',
+                            '11': 'November', '12': 'December'}
 
-        order_recipient = {
-            "order_id"  : str(_id),
-            "timestamp" : timestamp,
+    timestamp = list_of_months[str(time.month)] +" "+ str(time.year)
 
-            "fee"       : batch["cost"],
-            "batch_id"  : batch["id"],
-            "batch_slot": batch["slot"],
-            
-            "member_id" : member["id"],
-            "name"      : member["name"],
-            "age"       : member["age"],
-            "gender"    : member["gender"],
-            "address"   : member["address"],
-            "pin"       : member["pin"],
-            "mobile"    : member["mobile"],
+    order_data = {
+        "member_id" : member["id"],
+        "batch_id"  : batch["id"],
+        "fee"   : batch["cost"],
+        "timestamp" : timestamp
+    }
 
-        }
+    _id = order_collection.insert_one(order_data).inserted_id
 
-        return order_recipient
+    order_recipient = {
+        "order_id"  : str(_id),
+        "timestamp" : str(timestamp),
 
-    except:
-        return {"response" : "Invalid Credential"}
+        "fee"       : batch["cost"],
+        "batch_id"  : batch["id"],
+        "batch_slot": batch["slot"],
+        
+        "member_id" : member["id"],
+        "name"      : member["name"],
+        "age"       : member["age"],
+        "gender"    : member["gender"],
+        "address"   : member["address"],
+        "pin"       : member["pin"],
+        "mobile"    : member["mobile"],
+
+    }
+
+    return order_recipient
+
+    """except:
+        return {"response" : "Invalid Credential"}"""
 
 
 

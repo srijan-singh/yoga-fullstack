@@ -1,0 +1,1 @@
+{"id":"e9d6ebe3-0b72-406f-a475-c7732bc414d4","space":40023,"runtime":"python3.9","name":"backend","path":"gfs01p","project":"d0m86opt","account":"144798365827","region":"ap-south-1","deps":["pymongo==4.3.3","fastapi==0.87.0","uvicorn==0.20.0","pydantic==1.10.2"],"envs":null,"public":true,"log_level":"debug","cron":""}

@@ -1,4 +1,3 @@
-import uvicorn
 from fastapi import FastAPI, HTTPException
 # an HTTP-specific exception class  to generate exception information
 from fastapi.middleware.cors import CORSMiddleware
@@ -6,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from models import Member, Batch, Order, Payment
 
 from bson import ObjectId
+import uvicorn
 
 #Payment Gateway
 def CompletePayment(response):
@@ -57,28 +57,37 @@ async def index():
 #   Member
 @app.post("/register_member")
 async def register_member(request : Member):
+    if(getOneMember(request.id)):
+        return {"response":"Already Registered!"}
     response = postMember(request)
-    return request
+    return {"response":"Successfully Registered!"}
 
-@app.get("/member/{id}")
+@app.get("/member")
 async def show_one_member(id:str):
     response = getOneMember(id)
+
+    if(not response):
+        return {"response" : "error"}
+
     return response
 
-@app.put("/member/{id}/update")
+@app.put("/member/update")
 async def update_member(id : str, member : Member):
     response = putMember(id, member.name, member.age, member.gender, member.address, member.pin, member.mobile)
-    return response
-
-@app.delete("/member/{_id}/delete")
-async def remove_member(_id : str):
     
-    response = deleteMember(_id)
+    if(not response):
+        return {"response" : "error"}
 
-    if (response): 
-        return {200 : "User Deleted"}
+    return {"response" : "Successfully Updated!"}
 
-    return {500 : "User doesn't exist"}
+@app.delete("/member/delete")
+async def remove_member(id : str):
+    response = deleteMember(id)
+
+    if (not response): 
+        return {"response" : "error"}
+
+    return response
 
 #   Batch
 @app.get("/batch/*")
@@ -86,7 +95,7 @@ async def show_all_batch():
     response = getAllBatch()
     return response
 
-@app.get("/batch/{_id}")
+@app.get("/batch")
 async def show_one_batch(_id : str):
     
     response = getOneBatch(_id)

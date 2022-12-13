@@ -23,7 +23,7 @@ class Order(BaseModel):
     member_id : str 
     batch_id  : str
     fee       : float = 500.00
-    timestamp : datetime.datetime 
+    timestamp : str
 
 class Payment(BaseModel):
     member_id : str
