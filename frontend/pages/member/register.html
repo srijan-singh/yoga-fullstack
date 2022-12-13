@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <script src='../../script/member/register_member.js'></script>
+    </head>
+    <body>
+        <center>
+            <h1>Register Member</h1>
+            
+            <table>
+                <tr>
+                    <th>Id</th>
+                    <td><input type="email" id="id" required></td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td><input type="text" id="name" required></td>
+                </tr>
+                <tr>
+                    <th>Age</th>
+                    <td><input type="number" id="age" min="18" max="65" required></td>
+                </tr>
+                <tr>
+                    <th>Gender</th>
+                    <td>
+                        <select id="gender" required>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td><input type="text" id="address" required></td>
+                </tr>
+                <tr>
+                    <th>Pin</th>
+                    <td><input type="text" id="pin" minlength="6" maxlength="6" required></td>
+                </tr>
+                <tr>
+                    <th>Mobile</th>
+                    <td><input type="text" id="mobile" minlength="10" maxlength="10" required></td>
+                </tr>
+            </table>
+            <br>
+            <input type="submit" onclick="mainFunc()"/>
+        
+                
+            <div id="result">
+
+            </div>
+        </center>
+    </body>
+</html>

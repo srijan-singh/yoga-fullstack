@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>        
+    <head>
+        <title>
+            All User Data
+        </title>
+        <script src ="../../script/admin/order/allOrderData.js"></script>
+    </head>
+
+    <body>    
+        <center>
+            <h1>All Order Data</h1>
+            <table border="2">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Order Id</th>
+                        <th scope="col">Member Id</th>
+                        <th scope="col">Fee</th>
+                        <th scope="col">Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">                          
+                </tbody>
+            </table>
+            <br>
+            <button onclick='tableFromJson()'>Get Data</button>
+        </center>
+    </body>
+</html>
