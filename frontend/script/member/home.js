@@ -38,11 +38,11 @@ function show(database) {
         <tr><td colspan="2">Recipient ${i++}</td></tr>
         <tr>
 		<th>Order Id</th>
-        <td>${data.order_id} </td>
+        <td colspan="2">${data.order_id} </td>
         </tr>
-		<th>Fee of</th><td>${data.timestamp}</td>         <th>Fee Paid</th><td>${data.batch_cost}</td></tr>
+		<th>Fee of</th><td>${data.timestamp}</td>         <th>Amount</th><td>₹ ${data.batch_cost}</td></tr>
         <th>Name</th><td>${data.name}</td>                <th>Age</th><td>${data.age}</td></tr>
-        <th>Batch ID</th><td>${data.batch_id}</td>        <th>Batch Slot</th><td>${data.batch_slot}</td></tr>        
+        <th>Batch</th><td>${data.batch_id}</td>        <th>Slot</th><td>${data.batch_slot}</td></tr>        
         <th>Mobile</th><td>${data.mobile}</td>            <th>Pin</th><td>${data.pin}</td></tr>
         <tr><th></th></tr>
         `;

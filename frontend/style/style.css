@@ -236,6 +236,7 @@ th, td {
 	.column{
 		width: 80%;
 	}
+
 }
 
 @media (max-width: 720px){
@@ -247,6 +248,10 @@ th, td {
 	}
 
 	#recipient{
-		font-size: 10px;
+		font-size: 12px;
+	}
+	
+	.column{
+		width: 85%;
 	}
 }
