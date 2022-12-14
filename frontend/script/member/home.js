@@ -48,17 +48,19 @@ function show(database) {
         `;
 	}
 
+
     console.log(tab);
 
 	// Setting innerHTML as tab variable
     document.getElementById("h4").innerHTML = "Transaction History";
     document.getElementById('recipient').bgColor = '#FFF'; 
-    document.getElementById("recipient").style = "height:220px; width:100%;";
+    document.getElementById("recipient").style = "height:220px; width: 100%";
     document.getElementById("recipient").scrollIntoView({
         behavior: 'smooth',
         block: 'end',
         inline: 'start'
      }); 
+
 	document.getElementById("recipient").innerHTML = tab;
     
 }

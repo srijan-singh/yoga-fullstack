@@ -4,7 +4,8 @@ body{
 	font-family: 'Roboto', sans-serif;
     background-image: url("https://static.sadhguru.org/d/46272/1664421322-shiva-wallpaper-blue-purple-sky.jpg");
     background-repeat: no-repeat; 
-    background-size: cover; 
+	background-size:120%;
+	background-position-x: 51%;
 }
 * {
 	margin: 0;
@@ -34,6 +35,10 @@ button{
     border-radius: 25px;
 }
 
+th, td {
+    padding: 5px;
+  }
+
 .btn-disable
         {
         cursor: not-allowed;
@@ -44,10 +49,6 @@ button{
         background-color: #fff;
 
         }
-
-th, td {
-    padding: 5px;
-  }
 
 .column {
     background-color: rgba(255,255,255,.7);
@@ -197,6 +198,7 @@ th, td {
 @media (max-width: 991px){
 	#navbarSupportedContent ul li a{
 		padding: 12px 30px;
+		
 	}
 	.hori-selector{
 		margin-top: 0px;
@@ -223,5 +225,28 @@ th, td {
 	.hori-selector .right:before{
 		bottom: -25px;
 		left: -25px;
+	}
+
+	body{
+		background-size:300%; 
+		background-position-x: 51%;
+		background-position-y:  10%;
+	}
+
+	.column{
+		width: 80%;
+	}
+}
+
+@media (max-width: 720px){
+	
+	body{
+		background-size:auto; 
+		background-position-x: 51%;
+		background-position-y:  10%;
+	}
+
+	#recipient{
+		font-size: 10px;
 	}
 }
