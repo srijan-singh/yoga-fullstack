@@ -19,6 +19,7 @@ from databases import(
     postMember,
     putMember,
     deleteMember,
+    getTransactionHistory,
 
     #Batch
     getAllBatch,
@@ -29,6 +30,7 @@ from databases import(
 
     #Order
     postOrder,
+    getOneOrder,
     getRecipient,
     getAllOrder
 )
@@ -89,6 +91,10 @@ async def remove_member(id : str):
 
     return response
 
+@app.get("/member/transaction/*")
+async def transaction_history(id : str):
+    return getTransactionHistory(id)
+
 #   Batch
 @app.get("/batch/*")
 async def show_all_batch():
@@ -114,7 +120,7 @@ async def pay_fee(payment : Payment):
 async def show_recipient(id:str):
     _id = ObjectId(id)
 
-    return getRecipient(_id)
+    return getOneOrder(_id)
 
 ############################################Admin Access#################################################
 

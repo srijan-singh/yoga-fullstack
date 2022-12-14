@@ -148,6 +148,24 @@ def deleteMember(_id : str):
     except:
         return {"response" : "Invalid Credential"}
 
+def getTransactionHistory(_id : str):
+    transaction_list = list(order_collection.find({"member_id":_id}))
+    #print(transaction_list)
+
+    buffer = [transaction for transaction in transaction_list]
+
+    transaction_list = []
+
+    for transaction in buffer:
+
+        order_id = transaction["_id"]
+
+        json = getRecipient(order_id)
+
+        transaction_list.append(json)
+
+    return transaction_list
+
 #Batch
 def getAllBatch():
     batch_list = list(batch_collection.find({}))
@@ -257,54 +275,51 @@ def getAllOrder():
     return order_list
 
 def getOneOrder(_id : ObjectId):
-    try:
-        order = order_collection.find_one({"_id":_id})
 
-        json = {
-            "_id"       : order[_id],
-            "member_id" : order[order.member_id],
-            "batch_id"  : order[order.batch_id],
-            "fee"       : order[order.fee],
-            "timestamp" : order[order.timestamp]
-        }
+    order = order_collection.find_one({"_id":_id})
 
-        return json
+    json = {
+        "_id"       : str(order["_id"]),
+        "member_id" : order["member_id"],
+        "batch_id"  : order["batch_id"],
+        "fee"       : order["fee"],
+        "timestamp" : order["timestamp"]
+    }
 
-    except:
-        return {"response" : "Order Don't exist!"}
+    return json
+
 
 def getRecipient(_id : ObjectId):
 
-    try:
-        order = getOneOrder(_id)
-        member = getOneMember(ObjectId(order["member_id"]))
-        batch = getOneBatch(ObjectId(order["batch_id"]))
 
-        order_recipient = {
-            "order_id"  : order["_id"],
-            "timestamp" : order["timestamp"],
+    order = getOneOrder(_id)
+    member = getOneMember(order["member_id"])
+    batch = getOneBatch(order["batch_id"])
 
-            "batch_cost": batch["cost"],
-            "batch_id"  : batch["_id"],
-            "batch_slot": batch["slot"],
-            
-            "member_id" : member["_id"],
-            "name"      : member["name"],
-            "age"       : member["age"],
-            "gender"    : member["gender"],
-            "address"   : member["address"],
-            "pin"       : member["pin"],
-            "mobile"    : member["mobile"],
+    order_recipient = {
+        "order_id"  : str(order["_id"]),
+        "timestamp" : order["timestamp"],
 
-        }
+        "batch_cost": batch["cost"],
+        "batch_id"  : batch["id"],
+        "batch_slot": batch["slot"],
+        
+        "member_id" : member["id"],
+        "name"      : member["name"],
+        "age"       : member["age"],
+        "gender"    : member["gender"],
+        "address"   : member["address"],
+        "pin"       : member["pin"],
+        "mobile"    : member["mobile"],
 
-        return order_recipient
-    
+    }
+
+    return order_recipient
+"""
     except:
         return {"response" : "Invalid Credential"}
-
+"""
 def postOrder(member_id : str, batch_id : str):
- 
 
     member = getOneMember(member_id)
     batch = getOneBatch(batch_id)
@@ -345,10 +360,6 @@ def postOrder(member_id : str, batch_id : str):
     }
 
     return order_recipient
-
-    """except:
-        return {"response" : "Invalid Credential"}"""
-
 
 
 if __name__ == "__main__":
