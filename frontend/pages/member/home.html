@@ -8,8 +8,13 @@
         <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css'>
         <link rel="stylesheet" href="../../style/style.css">
         <script src='../../script/member.js'></script>
+        <script src="../../script/member/home.js"></script>
     </head>
     <body>
+        <style>
+            table  { display: inline-block; overflow: auto; }
+            th div { margin-top: -20px; position: absolute; }
+        </style>
         <!-- partial:index.partial.html -->
         <nav class="navbar navbar-expand-custom navbar-mainbg">
                 <a class="navbar-brand navbar-logo" href="home.html">Adiyogi</a>
@@ -43,9 +48,17 @@
         <!-- body -->
                 <center>
 
-                    <h1 style="margin-top: 20px; color: #5161ce;padding: 2%;">Welcome Member!</h1>
-                    
-                </center>   
+                    <h2 style="margin-top: 20px; color: #5161ce;padding: 2%;">Welcome Member!</h2>                    
+                    <div id="loading" style="color: #5161ce;">Loading Transaction History..</div>
+                </center>
+                <div id="loading"></div>
+                <div class="column">
+                    <div class="content">
+                        <h4 id="h4"></h4>
+                        <table id ="recipient">
+                        </table>
+                    </div>          
+                </div>     
         
         
         <!-- partial -->
